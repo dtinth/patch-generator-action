@@ -32,14 +32,33 @@ Then stage your changes and use this action:
 
 When there are auto-fixable issues, the action will generate a shell command to apply the changes, which looks like this:
 
-```sh
+```
+🚨 Your branch contains outdated files.
+💡 This problem can be automatically fixed.
+
+👉 Download and extract the 'git-patch' artifact from <URL> then run: 'git apply /path/to/fix.diff --index'
+
+👉 Alternatively, run the following command:
+
 echo '
-H4sIAAAAAAACA32QT0/DMAzF7/kUj3Nx1pauYxNCRWJHOCCOHJY1ThtpJFOa8UeI705LgW0c5oPl
-J9tPP1tbY0DU2Ag1kdvAMVoOocb6UAnrNL9hznmpDUuZzssZmwJZmpZFIYjoeFskSfLPoapAGZIM
-VSXo41M84d7D8evGOoaKYKfhDYzdsEj6vj4Ee1je3N4t5bPuTf/qH6jp2swyzqW8TKflhcqOofbT
-I9JeD0B5eV4g+c69fGzZoYuqYbz7XUDdKtdwB9Wj7TpGbG0v6mi9WwiMQUOnW0BH62I72apYt9Sw
-46CiDzROVy+ZwGq1EhB0ddZz/f6FbON8YBqOJ7o+/ZSTm188f2DQyAEAAA==
-' | base64 --decode | gunzip | git apply
+H4sIAAAAAAACA71XbVPbOBD+nl+xk+lNkiZWEgKBeo4OTEtL524od+U+HTeMYsuxiiP5JJmE4fjv
+t5KMk4DDS689PmBb2t1H++ybEvMkgSCYcgO0T/CRFpP+XKrLJJNz3Z9RUdCMXM8ymDy63eAiZgsY
+............................................................................
+' | base64 --decode | gunzip | git apply --index
+
+> See diff contents
+  diff --git a/.github/workflows/manual.yml b/.github/workflows/manual.yml
+  index 0274b57..6146ab2 100644
+  --- a/.github/workflows/manual.yml
+  +++ b/.github/workflows/manual.yml
+  @@ -9,23 +9,23 @@ jobs:
+     build:
+       runs-on: ubuntu-latest
+       steps:
+  -    - uses: actions/checkout@v1
+  +      - uses: actions/checkout@v1
+..........................................
+Error: Process completed with exit code 1.
 ```
 
 If the diff is too large, the action will instead suggest you to download the patch file from the artifacts and apply it using the [`git apply`](https://git-scm.com/docs/git-apply) command.
