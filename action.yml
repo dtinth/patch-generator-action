@@ -39,7 +39,7 @@ runs:
           echo "' | base64 --decode | gunzip | git apply"
           echo
           echo "::group::See diff contents"
-          cat /tmp/fix.diff
+          git diff --color
           echo "::endgroup::"
         fi
         exit 1
