@@ -23,17 +23,17 @@ runs:
         name: git-patch
         path: /tmp/fix.diff
     - run: |
-        puts
-        puts "This problem can be automatically fixed."
-        puts
-        puts "Download the 'git-patch' artifact from https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}, extract it, and run `git apply /path/to/fix.diff`"
-        puts
-        puts "Alternatively, run the following command:"
-        puts
-        puts "echo '"
-        system "base64 /tmp/fix.diff"
-        puts "' | base64 --decode | git apply"
-        puts
+        echo
+        echo "This problem can be automatically fixed."
+        echo
+        echo "Download the 'git-patch' artifact from https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}, extract it, and run: 'git apply /path/to/fix.diff'"
+        echo
+        echo "Alternatively, run the following command:"
+        echo
+        echo "echo '"
+        base64 /tmp/fix.diff
+        echo "' | base64 --decode | git apply"
+        echo
         exit 1
       if: steps.diff.outputs.result == 'dirty'
-      shell: ruby
+      shell: bash
