@@ -28,12 +28,19 @@ runs:
         echo
         echo "Download the 'git-patch' artifact from https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}, extract it, and run: 'git apply /path/to/fix.diff'"
         echo
-        echo "Alternatively, run the following command:"
-        echo
-        echo "echo '"
-        base64 /tmp/fix.diff
-        echo "' | base64 --decode | git apply"
-        echo
+        cat /tmp/fix.diff | gzip -9 | base64 > /tmp/fix.diff.gz.b64
+        if [ "$(wc -l < /tmp/fix.diff.gz.b64)" -lt 100 ]
+        then
+          echo "Alternatively, run the following command:"
+          echo
+          echo "echo '"
+          cat /tmp/fix.diff.gz.b64
+          echo "' | base64 --decode | gunzip | git apply"
+          echo
+          echo "::group::See diff contents"
+          cat /tmp/fix.diff
+          echo "::endgroup::"
+        fi
         exit 1
       if: steps.diff.outputs.result == 'dirty'
       shell: bash
