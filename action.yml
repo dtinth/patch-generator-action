@@ -1,0 +1,24 @@
+name: "Patch Generator"
+description: "Generates a patch when working directory is not clean."
+branding:
+  icon: "edit-3"
+  color: "blue"
+runs:
+  using: "composite"
+  steps:
+    - id: diff
+      run: git diff --exit-code --binary > /tmp/git-patch
+    - uses: actions/upload-artifact@v2
+      if: steps.diff.outcome == 'failure'
+      with:
+        name: git-patch
+        path: /tmp/git-patch
+    - run: |
+        (
+          echo 'Oops!'
+        ) | tee /tmp/git-patch-message.md
+    - uses: dtinth/markdown-report-action@af8143d37cced4c514fd67539a2e58c2f432da09
+      with:
+        name: Outdated files
+        title: Some files are outdated
+        body-file: /tmp/git-patch-message.md
