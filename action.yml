@@ -8,6 +8,7 @@ runs:
   steps:
     - id: diff
       run: git diff --exit-code --binary > /tmp/git-patch
+      shell: bash
     - uses: actions/upload-artifact@v2
       if: steps.diff.outcome == 'failure'
       with:
@@ -17,6 +18,7 @@ runs:
         (
           echo 'Oops!'
         ) | tee /tmp/git-patch-message.md
+      shell: bash
     - uses: dtinth/markdown-report-action@af8143d37cced4c514fd67539a2e58c2f432da09
       with:
         name: Outdated files
