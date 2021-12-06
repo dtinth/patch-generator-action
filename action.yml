@@ -26,8 +26,10 @@ runs:
         (
           echo 'Oops!'
         ) | tee /tmp/git-patch-message.md
+      if: steps.diff.outputs.result == 'dirty'
       shell: bash
     - uses: dtinth/markdown-report-action@af8143d37cced4c514fd67539a2e58c2f432da09
+      if: steps.diff.outputs.result == 'dirty'
       with:
         name: Outdated files
         title: Some files are outdated
