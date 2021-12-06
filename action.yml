@@ -8,12 +8,12 @@ runs:
   steps:
     - id: diff
       run: |
-        if git diff --binary --exit-code > /tmp/git-patch
+        if git diff --binary --exit-code > /tmp/fix.diff
         then
-          echo 'Clean'
+          echo 'CI worktree is clean.'
           echo '::set-output name=result::clean'
         else
-          echo 'Dirty'
+          echo 'CI worktree is dirty.'
           echo '::set-output name=result::dirty'
         fi
       shell: bash
@@ -21,16 +21,19 @@ runs:
       if: steps.diff.outputs.result == 'dirty'
       with:
         name: git-patch
-        path: /tmp/git-patch
+        path: /tmp/fix.diff
     - run: |
-        (
-          echo 'Oops!'
-        ) | tee /tmp/git-patch-message.md
+        puts
+        puts "This problem can be automatically fixed."
+        puts
+        puts "Download the 'git-patch' artifact from https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}, extract it, and run `git apply /path/to/fix.diff`"
+        puts
+        puts "Alternatively, run the following command:"
+        puts
+        puts "echo '"
+        system "base64 /tmp/fix.diff"
+        puts "' | base64 --decode | git apply"
+        puts
+        exit 1
       if: steps.diff.outputs.result == 'dirty'
-      shell: bash
-    - uses: dtinth/markdown-report-action@af8143d37cced4c514fd67539a2e58c2f432da09
-      if: steps.diff.outputs.result == 'dirty'
-      with:
-        name: Outdated files
-        title: Some files are outdated
-        body-file: /tmp/git-patch-message.md
+      shell: ruby
