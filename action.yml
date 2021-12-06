@@ -7,10 +7,18 @@ runs:
   using: "composite"
   steps:
     - id: diff
-      run: git diff --exit-code --binary > /tmp/git-patch
+      run: |
+        if git diff --binary > /tmp/git-patch
+        then
+          echo 'Clean'
+          echo '::set-output name=result::clean'
+        else
+          echo 'Dirty'
+          echo '::set-output name=result::dirty'
+        fi
       shell: bash
     - uses: actions/upload-artifact@v2
-      if: steps.diff.outcome == 'failure'
+      if: steps.diff.outputs.result == 'dirty'
       with:
         name: git-patch
         path: /tmp/git-patch
