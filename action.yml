@@ -13,7 +13,7 @@ runs:
           echo 'CI worktree is clean.'
           echo '::set-output name=result::clean'
         else
-          echo '::error::CI worktree is dirty. Your repository contains outdated files.'
+          echo '::error::CI worktree is dirty. Your branch contains outdated files.'
           echo '::set-output name=result::dirty'
         fi
       shell: bash
@@ -24,9 +24,10 @@ runs:
         path: /tmp/fix.diff
     - run: |
         echo
+        echo $'\033[1;31m'"🚨 Your branch contains outdated files."$'\033[m'
         echo $'\033[1;37m'"💡 This problem can be automatically fixed."$'\033[m'
         echo
-        echo "👉 Download the 'git-patch' artifact from https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}, extract it, and run: 'git apply /path/to/fix.diff'"
+        echo "👉 Download and extract the 'git-patch' artifact from https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} then run: 'git apply /path/to/fix.diff'"
         echo
         cat /tmp/fix.diff | gzip -9 | base64 > /tmp/fix.diff.gz.b64
         if [ "$(wc -l < /tmp/fix.diff.gz.b64)" -lt 100 ]
