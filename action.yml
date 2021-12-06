@@ -8,7 +8,7 @@ runs:
   steps:
     - id: diff
       run: |
-        if git diff --binary > /tmp/git-patch
+        if git diff --binary --exit-code > /tmp/git-patch
         then
           echo 'Clean'
           echo '::set-output name=result::clean'
