@@ -1,0 +1,14 @@
+name: Tidy
+
+on:
+  push: {}
+
+jobs:
+  tidy:
+    name: Ensure codebase is tidy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npx prettier --write .
+      - run: git add --update
+      - uses: ./
