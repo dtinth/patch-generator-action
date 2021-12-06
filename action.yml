@@ -1,5 +1,5 @@
 name: "Patch Generator"
-description: "Generates a patch when working directory is not clean."
+description: "Generates a shell command that applies staged changes in your local copy."
 branding:
   icon: "edit-3"
   color: "blue"
