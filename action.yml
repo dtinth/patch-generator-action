@@ -13,7 +13,7 @@ runs:
           echo 'CI worktree is clean.'
           echo '::set-output name=result::clean'
         else
-          echo '::error::CI worktree is dirty. Your branch contains outdated files.'
+          echo '::error::CI worktree is dirty.'
           echo '::set-output name=result::dirty'
         fi
       shell: bash
