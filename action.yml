@@ -11,10 +11,10 @@ runs:
         if git diff --staged --binary --exit-code > /tmp/fix.diff
         then
           echo 'CI worktree is clean.'
-          echo '::set-output name=result::clean'
+          echo 'result=clean' >> $GITHUB_OUTPUT
         else
           echo '::error::CI worktree is dirty.'
-          echo '::set-output name=result::dirty'
+          echo 'result=dirty' >> $GITHUB_OUTPUT
         fi
       shell: bash
     - uses: actions/upload-artifact@v4
