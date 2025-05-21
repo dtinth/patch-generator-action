@@ -17,7 +17,7 @@ runs:
           echo 'result=dirty' >> $GITHUB_OUTPUT
         fi
       shell: bash
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: steps.diff.outputs.result == 'dirty'
       with:
         name: git-patch
