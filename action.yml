@@ -17,7 +17,7 @@ runs:
           echo '::set-output name=result::dirty'
         fi
       shell: bash
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       if: steps.diff.outputs.result == 'dirty'
       with:
         name: git-patch
